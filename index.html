@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PaycheckGPS - Wage Analysis Tool</title>
+  
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-slate-50 min-h-screen">
+  
+  <!-- Header -->
+  <header class="bg-blue-600 text-white py-6">
+    <div class="max-w-4xl mx-auto px-4">
+      <h1 class="text-3xl font-bold">💰 PaycheckGPS</h1>
+      <p class="text-blue-100 mt-2">Wage & Market Analysis Tool</p>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="max-w-4xl mx-auto px-4 py-8">
+    
+    <!-- Input Section -->
+    <section id="inputSection" class="bg-white rounded-lg shadow-md p-6 mb-8">
+      <h2 class="text-2xl font-semibold mb-4 text-slate-800">Analyze Your Wage</h2>
+      <p class="text-slate-600 mb-6">Compare your compensation to inflation-adjusted purchasing power and market rates.</p>
+      <form id="wageForm" class="space-y-6">
+  
+  <!-- Current Wage -->
+  <div>
+    <label for="wage" class="block text-sm font-medium text-slate-700 mb-2">
+      Current Hourly Wage
+    </label>
+    <div class="relative">
+      <span class="absolute left-3 top-2.5 text-slate-500">$</span>
+      <input 
+        type="number" 
+        id="wage" 
+        step="0.01"
+        min="0"
+        max="200"
+        placeholder="16.00"
+        required
+        class="w-full pl-8 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+      >
+    </div>
+  </div>
+
+  <!-- Start Year -->
+  <div>
+    <label for="year" class="block text-sm font-medium text-slate-700 mb-2">
+      When did you start this wage (or get your last raise)?
+    </label>
+    <select 
+      id="year"
+      required
+      class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+    >
+      <option value="">Select year...</option>
+      <option value="2024">2024 (This year)</option>
+      <option value="2023">2023 (1 year ago)</option>
+      <option value="2022">2022 (2 years ago)</option>
+      <option value="2021">2021 (3 years ago)</option>
+      <option value="2020">2020 (4 years ago)</option>
+    </select>
+  </div>
+
+  <!-- Job Title -->
+  <div>
+    <label for="job" class="block text-sm font-medium text-slate-700 mb-2">
+      Job Title
+    </label>
+    <select 
+      id="job"
+      required
+      class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+    ><option value="">Select job...</option>
+<option value="Retail Salespersons">Retail Salespersons</option>
+<option value="Cashiers">Cashiers</option>
+<option value="Retail Supervisors">Retail Supervisors</option>
+<option value="Stock Clerks">Stock Clerks</option>
+<option value="Customer Service Representatives">Customer Service Representatives</option>
+<option value="Waiters and Waitresses">Waiters and Waitresses</option>
+<option value="Warehouse Workers">Warehouse Workers</option>
+<option value="Delivery Drivers">Delivery Drivers</option>
+<option value="Administrative Assistants">Administrative Assistants</option>
+<option value="Data Entry Specialists">Data Entry Specialists</option>
+<option value="Software Developers">Software Developers</option>
+<option value="Computer Support Specialists">Computer Support Specialists</option>
+<option value="Registered Nurses">Registered Nurses</option>
+<option value="Construction Managers">Construction Managers</option>
+    </select>
+
+  <!-- Location -->
+  <div>
+    <label for="location" class="block text-sm font-medium text-slate-700 mb-2">
+      Location
+    </label>
+    <select 
+      id="location"
+      required
+      class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+    >
+      <option value="">Select location...</option>
+<option value="National Average">National Average</option>
+<option value="Atlanta, GA">Atlanta, GA</option>
+<option value="New York, NY">New York, NY</option>
+<option value="Los Angeles, CA">Los Angeles, CA</option>
+<option value="Chicago, IL">Chicago, IL</option>
+<option value="Houston, TX">Houston, TX</option>
+<option value="Phoenix, AZ">Phoenix, AZ</option>
+<option value="Dallas, TX">Dallas, TX</option>
+</select>
+  </div>
+
+  <!-- Hours Per Week (Optional) -->
+  <div>
+    <label for="hoursPerWeek" class="block text-sm font-medium text-slate-700 mb-2">
+      Hours per week (optional)
+    </label>
+    <input 
+      type="number" 
+      id="hoursPerWeek" 
+      placeholder="40"
+      value="40"
+      min="1"
+      max="80"
+      class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+    >
+    <p class="text-sm text-slate-500 mt-1">Default is 40 (full-time). Adjust if part-time.</p>
+  </div>
+
+  <!-- Promotion Checkbox -->
+  <div class="flex items-start">
+    <input 
+      type="checkbox" 
+      id="wasPromotion"
+      class="mt-1 h-4 w-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500"
+    >
+    <label for="wasPromotion" class="ml-2 block text-sm text-slate-700">
+      My last raise was a promotion to a new role
+      <span class="block text-xs text-slate-500 mt-1">
+        Check this if you were promoted. We'll focus on market rate for your new role.
+      </span>
+    </label>
+  </div>
+
+  <!-- Error Message (hidden initially) -->
+  <div id="errorMessage" class="hidden bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+    <p class="text-sm"></p>
+  </div>
+
+  <!-- Analyze Button -->
+  <button 
+    type="submit"
+    id="analyzeBtn"
+    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
+  >
+    Analyze My Wage Gap
+  </button>
+
+</form>
+      
+    </section>
+
+    <!-- Results Section (hidden initially) -->
+<section id="resultsSection" class="hidden bg-white rounded-lg shadow-md p-6 mb-8">
+  
+  <!-- Headline -->
+  <div class="text-center mb-8 pb-6 border-b border-slate-200">
+    <h2 class="text-3xl font-bold text-slate-800 mb-2" id="headlineText"></h2>
+    <p class="text-lg text-slate-600" id="subheadlineText"></p>
+  </div>
+
+  <!-- Two Column Cards -->
+  <div class="grid md:grid-cols-2 gap-6 mb-8">
+    
+    <!-- Inflation Analysis Card -->
+    <div class="bg-blue-50 border border-blue-200 rounded-lg p-6">
+      <h3 class="text-xl font-semibold text-blue-900 mb-4">📈 Inflation Impact</h3>
+      <div id="inflationCard" class="space-y-3"></div>
+    </div>
+
+    <!-- Market Analysis Card -->
+    <div class="bg-green-50 border border-green-200 rounded-lg p-6">
+      <h3 class="text-xl font-semibold text-green-900 mb-4">📊 Market Comparison</h3>
+      <div id="marketCard" class="space-y-3"></div>
+    </div>
+
+  </div>
+
+  <!-- Year Context -->
+  <div class="bg-slate-50 border border-slate-200 rounded-lg p-4 mb-6">
+    <p class="text-sm text-slate-700" id="yearContext"></p>
+  </div>
+
+  <!-- 5-Year Projection -->
+  <div class="bg-amber-50 border border-amber-200 rounded-lg p-6 mb-6">
+    <h3 class="text-xl font-semibold text-amber-900 mb-3">5-Year Projection</h3>
+    <div id="fiveYearProjection"></div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="flex gap-4 justify-center">
+    <button onclick="window.print()" class="bg-slate-600 hover:bg-slate-700 text-white px-6 py-2 rounded-lg">
+      💾 Save as PDF
+    </button>
+    <button onclick="location.reload()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg">
+      🔄 Analyze Another Wage
+    </button>
+  </div>
+
+</section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="max-w-4xl mx-auto px-4 py-8 text-center text-slate-500 text-sm">
+    <p>Data sourced from U.S. Bureau of Labor Statistics</p>
+  </footer>
+
+ <script>
+    const USER_ID = "F5HRhhEC1Yvldsc";
+    const API_TOKEN = "lg56zMqqV8XJbrSolkpuKtiRMIXC2hxwq1lwDFIqJ4wICt4W7eSzad1yus2qKF2bL/0cgfnJTsKlxS8/kvIzuQ==</ p >";
+
+    async function testConnection() {
+        console.log("Attempting breakthrough with Corsproxy.io...");
+
+        const targetUrl = `https://api.careeronestop.org/v1/occupation/${USER_ID}/Nurse/false/0/10`;
+        
+        // This proxy is like a "tunnel" that ignores those strict header rules
+        const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`;
+
+        try {
+            const response = await fetch(proxyUrl, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${API_TOKEN}`,
+                    "Accept": "application/json"
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Server responded with ' + response.status);
+            }
+
+            const data = await response.json();
+            console.log("CONNECTION SUCCESSFUL:", data);
+            
+            if (data.OccupationList) {
+                alert("SUCCESS! You are officially connected to the CareerOneStop database.");
+            }
+        } catch (error) {
+            console.error("Still blocked. This is normal for local files.");
+            console.log("Error details:", error.message);
+        }
+    }
+
+    testConnection();
+</script>
+</body>
+
+</html>
