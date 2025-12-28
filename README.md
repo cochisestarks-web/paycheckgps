@@ -5,6 +5,8 @@ A wage gap calculator that shows workers how much they're losing to inflation an
 ## Live Demo
 👉 [paycheckgps.netlify.app](https://paycheckgps.netlify.app/)
 
+![PaycheckGPS Demo](paycheckgps-demo.png)
+
 ## What It Does
 
 Compares your current wage against two benchmarks:
